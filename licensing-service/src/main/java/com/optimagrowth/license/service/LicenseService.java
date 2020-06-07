@@ -19,6 +19,8 @@ import com.optimagrowth.license.repository.LicenseRepository;
 import com.optimagrowth.license.service.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.service.client.OrganizationFeignClient;
 import com.optimagrowth.license.service.client.OrganizationRestTemplateClient;
+import com.optimagrowth.license.utils.UserContextHolder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,6 +134,8 @@ public class LicenseService {
 			threadPoolKey= "getLicencesServiceThreadPool",
 			commandKey="getLicencesCommand")
 	public List<License> getLicensesByOrganization(String organizationId) {
+		logger.debug("LicenseService Correlation Id: " + 
+				UserContextHolder.getContext().getCorreleationId());
 		runRandomlyLongCall();
 		return licenseRepository.findByOrganizationId(organizationId);
 	}
