@@ -27,6 +27,7 @@
     <module>eurekaserver</module>
     <module>licensing-service</module>
     <module>organization-service</module>
+    <module>zuulserver</module>
   </modules>
   <build>
     <plugins>

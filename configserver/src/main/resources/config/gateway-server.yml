@@ -1,0 +1,38 @@
+server:
+   port: 8072
+eureka:
+   instance:
+      preferIpAddress: true
+   client:
+      registerWithEureka: true
+      fetchRegistry: true
+      serviceUrl:
+         defaultZone: http://eurekaserver:8070/eureka/
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 2500
+hystrix.command.organization.execution.isolation.thread.timeoutInMilliseconds: 3000
+spring:
+   cloud:
+      gateway: 
+         #To enable automatic endpoint dicovery for the Eureka appId, uncomment the below lines.
+         #discovery.locator:
+         #   enabled: true
+         #   lowerCaseServiceId: true
+         routes:
+         - id: organization-service
+           uri: lb://organization-service
+           predicates:
+           - Path=/organization/**
+           filters:
+           - RewritePath=/organization/(?<path>.*), /$\{path}
+         - id: licensing-service
+           # The address of target service is fetched for Eureka based on the URI value
+           uri: lb://license-service
+           predicates:
+           - Path=/license/**
+           filters:
+           - RewritePath=/license/(?<path>.*), /$\{path}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

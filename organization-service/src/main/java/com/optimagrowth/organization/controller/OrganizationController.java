@@ -1,5 +1,7 @@
 package com.optimagrowth.organization.controller;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,15 @@ public class OrganizationController {
     @Autowired
     private OrganizationService service;
 
-
+    private static final Logger logger = LoggerFactory.getLogger("OrganizationController.class");
+    
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public ResponseEntity<Organization> getOrganization( @PathVariable("organizationId") String organizationId) {
+        logger.debug("Request received for fetch organization by Id in the controller");
+    	
         return ResponseEntity.ok(service.findById(organizationId));
     }
-
+    
     @RequestMapping(value="/{organizationId}",method = RequestMethod.PUT)
     public void updateOrganization( @PathVariable("organizationId") String id, @RequestBody Organization organization) {
         service.update(organization);
