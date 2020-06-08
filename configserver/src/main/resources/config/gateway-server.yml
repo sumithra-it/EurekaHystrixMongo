@@ -26,7 +26,7 @@ spring:
            - RewritePath=/organization/(?<path>.*), /$\{path}
          - id: licensing-service
            # The address of target service is fetched for Eureka based on the URI value
-           uri: lb://license-service
+           uri: lb://licensing-service
            predicates:
            - Path=/license/**
            filters:
