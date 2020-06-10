@@ -1,7 +1,9 @@
 package com.optimagrowth.license.utils;
 
 import org.springframework.util.Assert;
-
+/* Stores UserContext in the ThreadLocal that is accessible from any method 
+ * from the thread processing the user's request
+ */
 public class UserContextHolder {
 	private static final ThreadLocal<UserContext> userContextLocal = new ThreadLocal<UserContext>();
 	

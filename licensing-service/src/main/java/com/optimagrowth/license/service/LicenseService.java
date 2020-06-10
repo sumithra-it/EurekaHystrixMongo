@@ -53,11 +53,13 @@ public class LicenseService {
 	private static final Logger logger = LoggerFactory.getLogger(LicenseService.class);
 	
 	public License getLicense(String licenseId, String organizationId, String clientType){
+		logger.debug("Fetching license info for licenseId ", licenseId);
 		License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
 		if (null == license) {
+			logger.debug("ERROR: license info not found for licenseId ", licenseId);
 			throw new IllegalArgumentException(String.format(messages.getMessage("license.search.error.message", null, null),licenseId, organizationId));	
 		}
-
+		logger.debug("Good Day! license info found for licenseId ", licenseId);
 		Organization organization = retrieveOrganizationInfo(organizationId, clientType);
 		if (null != organization) {
 			license.setOrganizationName(organization.getName());
@@ -136,7 +138,9 @@ public class LicenseService {
 	public List<License> getLicensesByOrganization(String organizationId) {
 		logger.debug("LicenseService Correlation Id: " + 
 				UserContextHolder.getContext().getCorreleationId());
-		runRandomlyLongCall();
+
+		//To test Hystrix timeout for long running calls uncomment the below line
+		//runRandomlyLongCall();
 		return licenseRepository.findByOrganizationId(organizationId);
 	}
 	

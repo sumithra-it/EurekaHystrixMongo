@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/*Intercepts all Http requests coming into service and map correlation id from http request 
+* to UserContext class
+*/
 @Component
 public class UserContextFilter implements Filter{
 	
@@ -27,6 +30,7 @@ public class UserContextFilter implements Filter{
 		UserContextHolder.getContext().setAuthToken(httpReq.getHeader(UserContext.AUTH_TOKEN));
 		UserContextHolder.getContext().setOrganizationId(httpReq.getHeader(UserContext.ORGANIZATION_ID));
 		UserContextHolder.getContext().setUserId(httpReq.getHeader(UserContext.USER_ID));
+
 		
 		logger.debug("UserContextFilter correlationId:" + UserContextHolder.getContext().getCorreleationId());
 		

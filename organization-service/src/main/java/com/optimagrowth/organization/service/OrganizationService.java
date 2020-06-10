@@ -21,7 +21,7 @@ public class OrganizationService {
 
     public Organization findById(String organizationId) {
     	logger.debug("Received call for fetch by Id");
-    	runRandomlyLongCall();
+    	//runRandomlyLongCall();
     	Optional<Organization> opt = repository.findById(organizationId);
         return (opt.isPresent()) ? opt.get() : null;
     }
