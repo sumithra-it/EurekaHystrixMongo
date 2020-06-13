@@ -1,4 +1,17 @@
 spring:
   data:
     mongodb:
-      host: "database"
+      host: database
+  main:
+    allow-bean-definition-overriding: true
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://authenticationservice:8091/auth/user
+    client:
+       client-id: ritasinc
+       client-secret: passwordkey
+       access-token-uri: http://authenticationservice:8091/auth/oauth/token
+       user-authorization-uri: http://authenticationservice:8091/auth/oauth/authorize
+  basic:
+    enabled: false

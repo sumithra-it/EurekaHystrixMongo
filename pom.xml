@@ -28,7 +28,7 @@
     <module>licensing-service</module>
     <module>organization-service</module>
     <module>zuulserver</module>
-<!--     <module>authentication-service</module> -->
+    <module>authentication-service</module>
   </modules>
   <build>
     <plugins>

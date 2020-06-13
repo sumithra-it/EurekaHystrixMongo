@@ -98,7 +98,28 @@ services:
       - "8081:8081"
     networks:
       - backend
-
+  authenticationservice:
+     image: ostock/authentication-service:0.0.1-SNAPSHOT
+     ports:
+       - "8091:8091"
+     environment:
+       PROFILE: "default"
+       SERVER_PORT: "8091"
+       CONFIGSERVER_URI: "http://configserver:8071"
+       EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+       EUREKASERVER_PORT: "8070"
+       CONFIGSERVER_PORT: "8071"
+     depends_on:
+       database:
+         condition: service_healthy
+       configserver:
+         condition: service_started
+       eurekaserver:
+         condition: service_started
+     networks:
+       backend:
+         aliases:
+           - "auth"
 networks:
   backend:
     driver: bridge
