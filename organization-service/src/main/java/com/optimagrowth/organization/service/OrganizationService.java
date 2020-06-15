@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.optimagrowth.organization.model.Organization;
 import com.optimagrowth.organization.repository.OrganizationRepository;
+import com.optimagrowth.organization.events.source.SimpleSourceBean;
 
 @Service
 public class OrganizationService {
 	
     @Autowired
     private OrganizationRepository repository;
+    
+    @Autowired
+    SimpleSourceBean simpleSourceBean;
+    
 	private static final Logger logger = LoggerFactory.getLogger(OrganizationService.class);
 
     public Organization findById(String organizationId) {
@@ -40,12 +45,17 @@ public class OrganizationService {
     public Organization create(Organization organization){
     	organization.setId( UUID.randomUUID().toString());
         organization = repository.save(organization);
+        
+// add the kafka event published
         return organization;
 
     }
 
     public void update(Organization organization){
     	repository.save(organization);
+    	
+    	//adding the kafka event publisher
+    	simpleSourceBean.publishOrgChange("UPDATE event", organization.getId());
     }
 
     public void delete(Organization organization){

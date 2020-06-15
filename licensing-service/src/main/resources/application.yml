@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: database
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: kafka:9092
+          zknodes: zookeeper:2181
+      bindings:
+        inputchannel:
+          destination: orgchangetopic
+          content-type: application/json

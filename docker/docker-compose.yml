@@ -25,6 +25,33 @@ services:
       backend:
         aliases:
           - "configserver"
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+    - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2182
+    networks:
+      backend:
+        aliases:
+          - "zookeeper"     
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    depends_on:
+    - zookeeper
+    ports:
+    - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      backend:
+        aliases:
+          - "kafka"     
   eurekaserver:
     image: ostock/eurekaserver:0.0.1-SNAPSHOT
     ports:
@@ -68,13 +95,19 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
+      KAFKASERVER_URI: "kafka"
+      ZKSERVER_URI: "kafka"
+      KAFKASERVER_PORT: "9092"
     depends_on:
       database:
         condition: service_healthy
       configserver:
         condition: service_started
+      kafka:
+        condition: service_started
     links:
       - database
+      - kafka
     ports:
       - "8080:8080"
     networks:
@@ -87,13 +120,19 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
+      KAFKASERVER_URI: "kafka"
+      ZKSERVER_URI: "kafka"
+      KAFKASERVER_PORT: "9092"
     depends_on:
       database:
         condition: service_healthy
       configserver:
         condition: service_started
+      kafka:
+        condition: service_started
     links:
       - database
+      - kafka
     ports:
       - "8081:8081"
     networks:

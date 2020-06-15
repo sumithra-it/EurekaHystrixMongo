@@ -72,6 +72,7 @@
 			<artifactId>spring-security-oauth2</artifactId>
 			<version>2.3.0.RELEASE</version>
 		</dependency> -->
+		<!-- JAXB needed by authentication module - JAXB has been removed in Java 11 -->
 		<dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
@@ -86,6 +87,19 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.3.1</version>
         </dependency>
+        <!-- Spring Streams dependencies for steam API and kafka based on latest spring version -->
+   		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 		
 	</dependencies>
 	
