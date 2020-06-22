@@ -51,7 +51,16 @@ services:
     networks:
       backend:
         aliases:
-          - "kafka"     
+          - "kafka" 
+  redis-cache:
+    image: redis
+    container_name: "redis-cache"
+    ports:
+      - 6379:6379 
+    networks:
+      backend:
+        aliases:
+          - "redis-cache"                    
   eurekaserver:
     image: ostock/eurekaserver:0.0.1-SNAPSHOT
     ports:
@@ -130,9 +139,12 @@ services:
         condition: service_started
       kafka:
         condition: service_started
+      redis-cache:
+        condition: service_started  
     links:
       - database
       - kafka
+      - redis-cache
     ports:
       - "8081:8081"
     networks:

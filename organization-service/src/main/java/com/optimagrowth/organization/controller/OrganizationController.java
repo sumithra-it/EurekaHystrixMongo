@@ -1,10 +1,14 @@
 package com.optimagrowth.organization.controller;
 
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +49,17 @@ public class OrganizationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrganization( @PathVariable("id") String id,  @RequestBody Organization organization) {
         service.delete(organization);
+    }
+    
+    @GetMapping("/organization")
+    public List<Organization> getAllFruit() {
+    	logger.debug("Fetch all Organizations");
+        return service.findAll();
+    }
+    
+    @GetMapping("/cachetest")
+    public String cachetest() {
+        return service.cacheThis();
     }
 
 }

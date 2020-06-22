@@ -1,14 +1,15 @@
 package com.optimagrowth.organization.model;
 
 import javax.validation.constraints.NotNull;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.redis.core.RedisHash;
+import java.io.Serializable;
 
-
+@RedisHash("org")
 @Document(collection = "organizations")
-public class Organization {
+public class Organization implements Serializable{
     @Id
     String id;
 
@@ -26,7 +27,9 @@ public class Organization {
     @Field(name =  "contact_phone")
     @NotNull
     String contactPhone;
-
+    
+    private static final long serialVersionUID = 1223232323L;
+    
     public String getId() {
         return id;
     }
@@ -66,5 +69,11 @@ public class Organization {
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
+
+	@Override
+	public String toString() {
+		return "Organization [id=" + id + ", name=" + name + ", contactName=" + contactName + ", contactEmail="
+				+ contactEmail + ", contactPhone=" + contactPhone + "]";
+	}
 
 }

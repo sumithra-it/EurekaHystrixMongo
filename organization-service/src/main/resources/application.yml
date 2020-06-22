@@ -14,6 +14,10 @@ spring:
          outputchannel:
            destination: orgchangetopic
            content-type: application/json
+  cache:
+    type: redis
+  redis:
+    url: redis://redis-cache:6379           
 security:
   oauth2:
     resource:
