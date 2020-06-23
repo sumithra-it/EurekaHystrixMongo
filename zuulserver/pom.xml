@@ -53,10 +53,14 @@
 			</exclusions>
 		</dependency>
 		<!-- Log tracing -->
-<!-- 		<dependency>
+ 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>  -->
+		</dependency>
+<!-- 		<dependency>For adding filter we need servlet
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency> -->
 		<!-- Zuul libraries for customizing ZuulFilter -->
 <!-- 		<dependency>
 		      <groupId>org.springframework.cloud</groupId>

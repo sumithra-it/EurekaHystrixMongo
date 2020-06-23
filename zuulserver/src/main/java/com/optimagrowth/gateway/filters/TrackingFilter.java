@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import brave.Tracer;
 
 @Order(1)
 @Component
@@ -18,6 +19,9 @@ public class TrackingFilter implements GlobalFilter {
 
 	@Autowired
 	public FilterUtils util;
+	
+	@Autowired
+	Tracer tracer;
 	
 	private static final Logger logger = LoggerFactory.getLogger(TrackingFilter.class); 
 	
@@ -28,7 +32,8 @@ public class TrackingFilter implements GlobalFilter {
 			logger.debug("sss-correation-Id is already present on the request header: {}",
 					util.getCorrelationId(requestHeaders));
 		} else {
-			String correlationID = java.util.UUID.randomUUID().toString();
+			//String correlationID = java.util.UUID.randomUUID().toString();
+			String correlationID = tracer.currentSpan().context().traceIdString();
 			exchange = util.setCorrelationId(exchange, correlationID);
 			logger.debug("sss-correation-Id was generated in the TrackingFilter and set in the header: {}",
 					correlationID);
