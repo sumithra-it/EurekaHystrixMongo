@@ -12,3 +12,8 @@ spring:
         inputchannel:
           destination: orgchangetopic
           content-type: application/json
+  sleuth:
+    sampler:
+      probability: 100 
+  zipkin:
+    baseUrl: http://zipkinserver:9411

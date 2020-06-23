@@ -85,6 +85,7 @@ services:
        EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
        EUREKASERVER_PORT: "8070"
        CONFIGSERVER_PORT: "8071"
+       ZIPKIN_URI: "http://zipkinserver:9411"
      depends_on:
        database:
          condition: service_healthy
@@ -107,6 +108,7 @@ services:
       KAFKASERVER_URI: "kafka"
       ZKSERVER_URI: "kafka"
       KAFKASERVER_PORT: "9092"
+      ZIPKIN_URI: "http://zipkinserver:9411"      
     depends_on:
       database:
         condition: service_healthy
@@ -132,6 +134,7 @@ services:
       KAFKASERVER_URI: "kafka"
       ZKSERVER_URI: "kafka"
       KAFKASERVER_PORT: "9092"
+      ZIPKIN_URI: "http://zipkinserver:9411"      
     depends_on:
       database:
         condition: service_healthy
@@ -176,6 +179,35 @@ services:
      command: syslog://logs6.papertrailapp.com:45997
      volumes: 
        - /var/run/docker.sock:/var/run/docker.sock
+  zipkinmysql:
+    image: openzipkin/zipkin-mysql
+    container_name: zipkinmysql
+    ports:
+        - 3306:3306
+    networks:
+      - backend    
+  zipkinserver:
+    image: openzipkin/zipkin
+    container_name: zipkinserver
+    environment:
+      - STORAGE_TYPE=mysql
+      # Point the zipkin at the storage backend
+      - MYSQL_HOST=zipkinmysql
+      # Uncomment to enable scribe
+      # - SCRIBE_ENABLED=true
+      # Uncomment to enable self-tracing
+      # - SELF_TRACING_ENABLED=true
+      # Uncomment to enable debug logging
+      # - JAVA_OPTS=-Dlogging.level.zipkin2=DEBUG
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+      # Uncomment if you set SCRIBE_ENABLED=true
+      # - 9410:9410
+    depends_on:
+      - zipkinmysql
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge

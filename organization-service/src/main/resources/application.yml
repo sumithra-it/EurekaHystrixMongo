@@ -17,7 +17,12 @@ spring:
   cache:
     type: redis
   redis:
-    url: redis://redis-cache:6379           
+    url: redis://redis-cache:6379
+  zipkin:
+    baseUrl: http://zipkinserver:9411     
+  sleuth:
+    sampler:
+      probability: 100        
 security:
   oauth2:
     resource:
