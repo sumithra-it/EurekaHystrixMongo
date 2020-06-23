@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpHeaders;
-
+import org.springframework.http.codec.ServerCodecConfigurer;
 import reactor.core.publisher.Mono;
 
 import org.slf4j.Logger;
@@ -16,6 +16,12 @@ import org.slf4j.Logger;
  */
 @Configuration
 public class ResponseFilter {
+
+	
+	@Bean
+	public ServerCodecConfigurer serverCodecConfigurer() {
+	   return ServerCodecConfigurer.create();
+	}
 	
 	@Autowired
 	FilterUtils filterUtils;

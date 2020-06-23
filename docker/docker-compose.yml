@@ -171,6 +171,11 @@ services:
        backend:
          aliases:
            - "auth"
+  logspout:
+     image: gliderlabs/logspout
+     command: syslog://logs6.papertrailapp.com:45997
+     volumes: 
+       - /var/run/docker.sock:/var/run/docker.sock
 networks:
   backend:
     driver: bridge

@@ -30,35 +30,39 @@ public class OrganizationController {
     
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public ResponseEntity<Organization> getOrganization( @PathVariable("organizationId") String organizationId) {
-        logger.debug("Request received for fetch organization by Id in the controller");
+        logger.info("Request received for fetch organization by Id in the controller");
     	
         return ResponseEntity.ok(service.findById(organizationId));
     }
     
     @RequestMapping(value="/{organizationId}",method = RequestMethod.PUT)
     public void updateOrganization( @PathVariable("organizationId") String id, @RequestBody Organization organization) {
-        service.update(organization);
+    	logger.info("Request received for update organization by Id in controller");
+    	service.update(organization);
     }
 
     @PostMapping
     public ResponseEntity<Organization>  saveOrganization(@RequestBody Organization organization) {
+    	logger.info("Request received for create new organization in controller");
     	return ResponseEntity.ok(service.create(organization));
     }
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrganization( @PathVariable("id") String id,  @RequestBody Organization organization) {
-        service.delete(organization);
+    	logger.info("Request received to delete organization by Id in controller");
+    	service.delete(organization);
     }
     
     @GetMapping("/organization")
     public List<Organization> getAllFruit() {
-    	logger.debug("Fetch all Organizations");
+    	logger.info("Fetch all Organizations");
         return service.findAll();
     }
     
     @GetMapping("/cachetest")
     public String cachetest() {
+    	logger.info("Request received to test caching");
         return service.cacheThis();
     }
 

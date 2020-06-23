@@ -29,7 +29,7 @@ public class OrganizationService {
 
     @Cacheable(cacheNames = "myCache")
     public String cacheThis(){
-    	logger.debug("Returning NOT from cache!");
+    	logger.info("Returning NOT from cache!");
         return "this Is it";
     }
     
@@ -40,7 +40,7 @@ public class OrganizationService {
     
 	@Cacheable(value="org", key="#id")
     public Organization findById(String id) {
-    	logger.debug("Received call for fetch by Id");
+    	logger.info("NOT from cache. Received call for fetch by Id");
     	//runRandomlyLongCall();
     	Optional<Organization> opt = repository.findById(id);
         return (opt.isPresent()) ? opt.get() : null;
@@ -59,7 +59,8 @@ public class OrganizationService {
 
 	@Cacheable(value="org")
     public Organization create(Organization organization){
-    	organization.setId( UUID.randomUUID().toString());
+		logger.info("Received call for create. Will insert it to Cache");
+		organization.setId( UUID.randomUUID().toString());
         organization = repository.save(organization);
         
 // add the kafka event published
@@ -67,8 +68,9 @@ public class OrganizationService {
 
     }
 
-	@CachePut(value="org", key="#organization.id")
+	@CachePut(value="org")
     public void update(Organization organization){
+		logger.info("Received call for update. Will update it to cache");
     	repository.save(organization);
     	
     	//adding the kafka event publisher
@@ -77,6 +79,7 @@ public class OrganizationService {
 
 	@CacheEvict(value="org", key="#organization.id")
     public void delete(Organization organization){
+		logger.info("Received call to delete. Will evict from cache");
     	repository.deleteById(organization.getId());
     }
 }

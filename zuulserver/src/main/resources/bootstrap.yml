@@ -4,9 +4,11 @@ spring:
    cloud:
       config: 
          uri: http://configserver:8071
+   main:
+      allow-bean-definition-overriding: true
 logging:
   level:
     com.netflix: WARN
-    org.springframework.web: WARN
-    com.optimagrowth: DEBUG
+    org.springframework.web: DEBUG
+    com.optimagrowth: WARN
        
